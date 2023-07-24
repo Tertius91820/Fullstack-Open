@@ -1,8 +1,13 @@
 const express = require('express')
 const app = express()
 const PORT = 8000
+const morgan = require('morgan')
 
 app.use(express.json())
+app.use(morgan('tiny'))
+morgan.token('object',function(req,res){return `${JSON.stringify(req.body)}`})
+app.use(morgan(':object'))
+
 
 let persons = [
     { 
@@ -25,7 +30,7 @@ let persons = [
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
     }
-]
+  ]
 
 app.get('/api/persons',(request,response)=>{
   response.json(persons)
